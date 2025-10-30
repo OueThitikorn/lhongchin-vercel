@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<%- include('partials/baseHead', { customTitle: 'ชำระเงิน' }) %>
+
+    <body class="bg-light">
+        <div style="background-color: #a9141b;">
+            <div class="container">
+
+                <nav class="navbar navbar-dark">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <a class="navbar-brand mx-auto d-flex align-items-center" href="/"
+                            style="font-weight: bold; font-size: 30px;">
+                            <img src="/images/logo.png" alt="Logo" width="70" height="70"
+                                class="d-inline-block me-2 align-text-top">
+                            LhongChin
+                        </a>
+                    </div>
+                </nav>
+
+                <nav class="nav-con navbar navbar-expand-lg navbar-dark"
+                    style="position: sticky; top: 0; z-index: 999;">
+                    <div class="container-fluid">
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <div class="d-flex justify-content-between w-100 align-items-center">
+
+                                <div class="navbar-nav">
+                                </div>
+                                <div class="d-none d-lg-flex gap-2">
+                                    <% if (!isLoggedIn) { %>
+                                        <a class="button-login" href="/auth/login">เข้าสู่ระบบ</a>
+                                        <a class="button-login" href="/auth/register">สมัครสมาชิก</a>
+                                        <% } else { %>
+                                            <p style="color: #ffffffc9;" class="my-auto">
+                                                <%= role %> : <%= name %>
+                                            </p>
+                                            <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="container my-5">
+            <div class="card shadow-lg rounded-4 mx-auto" style="max-width: 650px;">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-2">ชำระเงิน</h2>
+
+                    <!-- แสดงข้อมูลทัวร์ -->
+                    <div class="bg-body-tertiary p-3 rounded mb-4">
+                        <div class="row">
+                            <div class="col-7">
+                                <p><strong>ชื่อทัวร์:</strong>
+                                    <%= booking.tour_name %>
+                                </p>
+                                <p><strong>รอบการเดินทาง:</strong>
+                                    <%= new Date(booking.start_date).toLocaleDateString('th-TH') %> - <%= new
+                                            Date(booking.end_date).toLocaleDateString('th-TH') %>
+                                </p>
+
+                            </div>
+                            <div class="col-5">
+                                <p><strong>วันที่จอง:</strong>
+                                    <%= new Date(booking.booking_date).toLocaleDateString('th-TH') %>
+                                </p>
+
+                                <p><strong>จำนวน:</strong>
+                                    <%= booking.total_people %> คน
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ส่วน QR Code สำหรับโอน -->
+                    <div class="text-center mb-4">
+                        <h5>สแกน QR Code เพื่อชำระเงิน</h5>
+                        <img src="/images/qr_payment.png" alt="QR Payment" class="img-fluid" style="max-width: 260px;">
+                        <div class="text-muted">
+                            <h4 class="mb-2">ราคา:
+                                <span style="color: #a9141b; font-size: 34px;">
+                                    <%= booking.total_price.toLocaleString() %>
+                                </span> บาท
+                            </h4>
+                            <p>บัญชี: บริษัท หลงจีนทัวร์ จำกัด</p>
+                            <p>ธนาคารไทยพาณิชย์ • เลขที่บัญชี 123-456789-0</p>
+                        </div>
+                    </div>
+
+                    <!-- ฟอร์มอัปโหลดสลิป -->
+                    <form action="/payment/<%= booking.booking_id %>" method="POST" enctype="multipart/form-data"
+                        onsubmit="return validateSlip()">
+                        <div class="mb-3">
+                            <label for="slip" class="form-label fw-semibold">อัปโหลดสลิปโอนเงิน</label>
+                            <input type="file" name="slip" id="slip" class="form-control" accept="image/*" required
+                                onchange="previewSlip(event)">
+                            <small class="text-muted">รองรับไฟล์รูปภาพเท่านั้น ขนาดไม่เกิน 5MB</small>
+                        </div>
+
+                        <!-- Preview รูปสลิป -->
+                        <div class="mb-2 text-center">
+                            <img id="slipPreview" src="#" alt="Slip Preview" class="img-fluid d-none"
+                                style="max-height: 300px; border: 1px solid #ccc; padding: 5px;">
+                        </div>
+                        <div class="mb-3 text-center d-none" id="slipInfo">
+                            <p id="slipName" class="mb-0"></p>
+                            <p id="slipSize" class="mb-0 text-muted"></p>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">
+                            ยืนยันการชำระเงิน
+                        </button>
+                        <a type="button" href="/reserve" class="btn btn-danger w-100 py-2 fw-semibold mt-1">
+                            ยกเลิก
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+    <%- include('partials/allScript') %>
+
+</html>

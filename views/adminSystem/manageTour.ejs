@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/baseHead', { customTitle: 'Manage tour programs' }) %>
+
+  <body>
+    <%- include('../partials/navAdmin') %>
+      <div class="mx-5">
+        <h1>การจัดการโปรแกรมทัวร์</h1>
+        <div class="d-flex justify-content-end mb-3">
+          <a href="/admin/manageTour/create" type="button" class="btn btn-primary"><ion-icon name="add"
+              style="font-size: 1.2rem; vertical-align: middle; margin-right: 3px;"></ion-icon>สร้าง</a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 2%;">#ID</th>
+                <th style="width: 13%;">รูปภาพ</th>
+                <th style="width: 13%;">ชื่อโปรแกรม</th>
+                <th style="width: 5%;">ราคา</th>
+                <th style="width: 28%;">รายละเอียด</th>
+                <!-- <th style="width: 5%;">จำนวนวัน</th> -->
+                <th style="width: 13%;">รอบการเดินทาง</th>
+                <th style="width: 5%;">จำนวนที่นั่ง</th>
+                <th style="width: 5%;">ประเทศ</th>
+                <th style="width: 10%;">ไกด์</th>
+                <th style="width: 11%;">จัดการ</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% tours.forEach(tour=> { %>
+                <tr class="text-center">
+                  <td>
+                    <%= tour.tour_id %>
+                  </td>
+                  <td ">
+                      <% if (tour.image) { %>
+                        <img src=" /uploads/<%=tour.image %>" style="width: 200px;" class="rounded " />
+                    <% } else { %>
+                      <p>No image</p>
+                      <% } %>
+                  </td>
+                  <td>
+                    <%= tour.tour_name %>
+                  </td>
+                  <td>
+                    <%= tour.price.toLocaleString() %>
+                  </td>
+                  <td class="text-start">
+                    <%= tour.description %>
+                  </td>
+                  <!-- <td>
+                    <%= tour.duration %>
+                  </td> -->
+                  <td>
+                    <%= new Date(tour.start_date).toLocaleDateString('th-TH') %> - <%= new
+                    Date(tour.end_date).toLocaleDateString('th-TH') %>
+                  </td>
+                  <td>
+                    <%= tour.seat %>
+                  </td>
+                  <td>
+                    <%= tour.country %>
+                  </td>
+                  <td>
+                    <%= tour.guide_name %>
+                  </td>
+                  <td>
+                    <a href="/admin/manageTour/edit/<%= tour.tour_id %>" type="button" class="btn btn-warning"><ion-icon
+                        name="pencil-sharp"></ion-icon></a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                      data-bs-target="#deleteModal_<%= tour.tour_id %>">
+                      <ion-icon name="trash"></ion-icon>
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteModal_<%= tour.tour_id %>" tabindex="-1"
+                      aria-labelledby="deleteModalLabel_<%= tour.tour_id %>" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel_<%= tour.tour_id %>">ยืนยันการลบ</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button>
+                          </div>
+                          <div class="modal-body">
+                            <div>
+                              คุณแน่ใจหรือไม่ว่าต้องการลบทัวร์ <div style="color: brown; font-size: 21px;">
+                                "<%= tour.tour_name %>"
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                            <a href="/admin/manageTour/delete/<%= tour.tour_id %>" class="btn btn-danger">ลบ</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </body>
+  <%- include('../partials/allScript') %>
+
+</html>

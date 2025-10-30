@@ -1,0 +1,108 @@
+<!-- Body Wrapper -->
+
+<style>
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: white;
+        /* ปรับสีตามพื้นหลัง */
+        margin: 0.6rem 0;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: "";
+        flex: 1;
+        border-top: 3px solid rgba(255, 255, 255, 0.155);
+    }
+
+    .divider:not(:empty)::before {
+        margin-right: 0.75em;
+    }
+
+    .divider:not(:empty)::after {
+        margin-left: 0.75em;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <!-- ปุ่มเปิด Sidebar -->
+        <div class="d-flex align-items-center m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar"
+            aria-controls="sidebar">
+            <ion-icon name="list-outline" style="font-size: 2rem; color: white;"></ion-icon>
+        </div>
+
+        <!-- Navbar Content -->
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <a href="/admin" class="navbar-brand" style="font-size: 34px;">Dashboard</a>
+            <% if (isLoggedIn) { %>
+                <p class="mb-0 text-white-50">
+                    <%= role %> : <%= name %>
+                </p>
+                <% } else { %>
+                    <a href="/login" class="text-white text-decoration-none">เข้าสู่ระบบ</a>
+                    <% } %>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="sidebar offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebar"
+    aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header" style="padding-top: 60px; padding-bottom: 25px; padding-left: 40px;">
+        <h5 class="offcanvas-title" style="font-size: 32px;" id="sidebarLabel">Dashboard</h5>
+        <div type="button" data-bs-dismiss="offcanvas" aria-label="Close"><ion-icon name="close-sharp"
+                style="font-size: 2rem;"></ion-icon></div>
+    </div>
+    <div class="offcanvas-body" style="padding-left: 40px; font-size: 20px;">
+        <ul class="nav flex-column" style="gap: 8px;">
+            <div class="divider">
+                <span>เมนูหลัก</span>
+            </div>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/admin">หน้าแรก</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/admin/manageTour">การจัดการโปรแกรมทัวร์</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/admin/paymentVerify">การตรวจสอบการชำระเงิน</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/admin/checkIn">การเช็คอินทัวร์</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/admin">จัดทำรายงาน</a>
+            </li>
+
+            <div class="divider">
+                <span>จัดการข้อมูลพื้นฐาน</span>
+            </div>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/admin/manageReserve">การจัดการข้อมูลการจอง</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/admin/manageGuide">การจัดการข้อมูลไกด์</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/admin/manageUser">การจัดการข้อมูลผู้ใช้</a>
+            </li>
+            <div style="border-top: 3px solid rgba(255, 255, 255, 0.155);"></div>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/" style="display: inline-flex; align-items: center; gap: 10px;">
+                    กลับหน้าเว็บไซต์หลัก</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/auth/logout" style="display: inline-flex; align-items: center; gap: 10px;">
+                    <ion-icon name="log-out-outline" style="font-size: 1.5rem;"></ion-icon>ออกจากระบบ</a>
+            </li>
+        </ul>
+    </div>
+</div>

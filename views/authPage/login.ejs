@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="th">
+<%- include('../partials/baseHead', { customTitle: 'Login' }) %>
+
+  <body>
+    <div style="background-color: #a9141b;">
+      <div class="container">
+        <nav class="navbar navbar-dark">
+          <div class="container-fluid">
+            <a class="navbar-brand mx-auto d-flex align-items-center" href="/"
+              style="font-weight: bold; font-size: 30px;">
+              <img src="/images/logo.png" alt="" width="70" height="70" class="d-inline-block align-text-top">
+              LhongChin
+            </a>
+        </nav>
+      </div>
+    </div>
+    
+    <div class="container">
+      <div class="row mt-5 mb-5">
+        <div class="col-md-6 mx-auto">
+          <div class="card p-4 rounded-4">
+            <h1 class="text-center mb-3">เข้าสู่ระบบ</h1>
+
+            <form action="/auth/login" method="post" novalidate>
+              <div class="form-group mb-2">
+                <label for="_email"><span style="color: red; margin-right: 6px;">*</span>อีเมล</label>
+                <input type="email" id="_email" name="user_email" class="form-control" placeholder="example@gmail.com">
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="_pass"><span style="color: red; margin-right: 6px;">*</span>รหัสผ่าน</label>
+                <input type="password" id="user_pass" name="user_pass" class="form-control" placeholder="ใส่รหัสผ่าน..">
+              </div>
+
+              <% if (locals.login_errors) { login_errors.forEach(function(error_msg) { %>
+                <div class="alert alert-danger" role="alert">
+                  <%= error_msg %>
+                </div>
+                <% }) } %>
+
+                  <button type="submit" class="btn btn-danger mb-1"
+                    style="background-color: brown;">เข้าสู่ระบบ</button>
+            </form>
+
+            <p>คุณยังไม่มีบัญชีใช่ไหม? <a href="/auth/register" style="
+                text-decoration: none; color: brown;">สมัครสมาชิก</a></p>
+                
+            <a href="/" style="text-decoration: none; color: brown; display: inline-flex; align-items: center; gap: 5px;">
+              <ion-icon name="arrow-back-sharp"></ion-icon> ย้อนกลับ
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <%- include('../partials/allScript') %>
+
+</html>

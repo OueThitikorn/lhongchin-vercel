@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/baseHead', { customTitle: 'Program Tour' }) %>
+
+  <body style="flex: 1;">
+    <%- include('./partials/nav') %>
+
+
+      <% if (tours && tours.length> 0) { %>
+        <% tours.forEach(tour=> { %>
+          <div class="container mt-5">
+            <div class="card rounded-4 mx-auto" style="max-width: 1320px;">
+              <div class="row g-0">
+
+                <div class="d-lg-flex justify-content-between">
+                  <div class="col-lg-4 image-wrapper">
+                    <% if (tour.image) { %>
+                      <img src="/uploads/<%= tour.image %>" class="img-fluid rounded-start" />
+                      <% } else { %>
+                        <p>No image</p>
+                        <% } %>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="card-body">
+                      <div class="card-tour">
+                        <h2 class="card-title">
+                          <%= tour.tour_name %>
+                        </h2>
+                        <p style="font-size: 18px; margin-bottom: 15px;" class="card-text">
+                          <%= tour.description %>
+                        </p>
+                        <p class="card-text">ระยะเวลา : <%= tour.duration %> วัน <%= tour.duration-1 %> คืน
+                        </p>
+                        <p class="card-text">ประเทศ : <%= tour.country %>
+                        </p>
+                        <p class="card-text">
+                          รอบการเดินทาง :
+                          <%= new Date(tour.start_date).toLocaleDateString('th-TH') %>
+                            -
+                            <%= new Date(tour.end_date).toLocaleDateString('th-TH') %>
+                        </p>
+                        <div style="height: 70px;">
+                          <p style="font-size: 34px;">เริ่มต้น
+                            <span class="price-highlight">
+                              <%= tour.price.toLocaleString() %>
+                            </span>THB
+                          </p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <p class="card-text">ไกด์ : <%= tour.guide_name %>
+                          </p>
+                          <p class="card-text">เหลือ <%= tour.seat - tour.seats_booked %>/<%= tour.seat %> ที่นั่ง
+                          </p>
+                        </div>
+
+                        <a href="/tourprogram/bookTour/<%= tour.tour_id %>"
+                          class="button-tour <% if (tour.seat - tour.seats_booked === 0) { %> d-none <% } %>">
+                          จองทัวร์
+                        </a>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="fullModal<%= tour.tour_id %>" tabindex="-1"
+                          aria-labelledby="fullModalLabel<%= tour.tour_id %>" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title" id="fullModalLabel<%= tour.tour_id %>">ทัวร์เต็มแล้ว</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                ขอโทษค่ะ ทัวร์นี้มีผู้จองครบแล้ว กรุณาเลือกทัวร์อื่น
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                  data-bs-dismiss="modal">ปิดหน้าต่าง</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <!-- ปุ่มแสดง modal ถ้าที่นั่งเต็ม -->
+                        <% if (tour.seat - tour.seats_booked===0) { %>
+                          <button type="button" class="button-tour" data-bs-toggle="modal"
+                            data-bs-target="#fullModal<%= tour.tour_id %>">
+                            จองทัวร์
+                          </button>
+                          <% } %>
+
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+
+            <% } else { %>
+              <div class="card rounded-4 mx-auto m-5 p-5" style="width: 1320px;">
+                <div class="text-center text-muted py-5">
+                  <i class="bi bi-calendar-x display-3 d-block mb-3"></i>
+                  <p class="fs-5">ยังไม่มีโปรแกรมทัวร์ในขณะนี้</p>
+                  <a href="/contact" class="btn btn-success rounded-pill px-4 mt-2">
+                    <i class="bi bi-telephone"></i> ติดต่อเรา
+                  </a>
+                </div>
+              </div>
+              <% } %>
+
+                <%- include('./partials/footer') %>
+
+  </body>
+  <%- include('./partials/allScript') %>
+
+</html>

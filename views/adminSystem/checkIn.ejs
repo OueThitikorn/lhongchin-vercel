@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/baseHead', { customTitle: 'Check-In Tour' }) %>
+
+  <body>
+    <%- include('../partials/navAdmin') %>
+
+      <div class="mx-5">
+        <h1 class="mb-5">การเช็คอินทัวร์</h1>
+
+        <div class="table-responsive d-flex justify-content-center">
+          <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-light">
+              <tr>
+                <th>#ID</th>
+                <th>ชื่อผู้จอง</th>
+                <th>เบอร์โทรศัพท์</th>
+                <th>ชื่อโปรแกรมทัวร์</th>
+                <th>รอบการเดินทาง</th>
+                <th>จำนวน (คน)</th>
+                <th>วันที่จอง</th>
+                <th>วันที่ชำระเงิน</th>
+                <th>ราคา (บาท)</th>
+                <th>สถานะ</th>
+                <th>จัดการ</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% booking.forEach(booking=> { %>
+                <tr>
+                  <td>
+                    <%= booking.booking_id %>
+                  </td>
+                  <td>
+                    <%= booking.user_name %>
+                  </td>
+                  <td>
+                    <%= booking.phone %>
+                  </td>
+                  <td>
+                    <%= booking.tour_name %>
+                  </td>
+                  <td>
+                    <% if (booking.start_date && booking.end_date) { %>
+                      <%= new Date(booking.start_date).toLocaleDateString('th-TH') %> -
+                        <%= new Date(booking.end_date).toLocaleDateString('th-TH') %>
+                          <% } else { %>
+                            -
+                            <% } %>
+                  </td>
+                  <td>
+                    <%= booking.total_people %> คน
+                  </td>
+                  <td>
+                    <%= new Date(booking.booking_date).toLocaleDateString('th-TH') %>
+                  </td>
+                  <td>
+                    <%= new Date(booking.payment_date).toLocaleDateString('th-TH') %>
+                    <%= booking.payment_time.slice(0,5) %> น.
+                  </td>
+                  <td>
+                    <%= booking.total_price.toLocaleString() %>
+                  </td>
+                  <td style="color: green;">
+                    ชำระเงินแล้ว <br>
+
+                    <!-- ปุ่มใบเสร็จ -->
+                    <% if (booking.slip_path) { %>
+                      <button type="button" class="btn btn-warning text-white mb-2" data-bs-toggle="modal"
+                        data-bs-target="#slipModal_<%= booking.booking_id %>">
+                        ใบเสร็จ
+                      </button>
+
+                      <!-- Modal แสดงรูป slip -->
+                      <div class="modal fade" id="slipModal_<%= booking.booking_id %>" tabindex="-1"
+                        aria-labelledby="slipModalLabel_<%= booking.booking_id %>" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="slipModalLabel_<%= booking.booking_id %>">
+                                ใบเสร็จการชำระเงิน #ID<%= booking.booking_id %>
+                              </h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                              <img src="/uploads/<%= booking.slip_path %>" alt="Slip Payment" class="img-fluid"
+                                onerror="this.src='/images/no-slip.png';">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <% } else { %>
+                        <button class="btn btn-warning mb-2" disabled>ยังไม่มีใบเสร็จ</button>
+                        <% } %>
+                  </td>
+
+                  <td>
+                    <% if (booking.checkin_status==='เช็คอินแล้ว' ) { %>
+                      <div style="color: green;">เช็คอินแล้ว</div>
+                      <% } else { %>
+                        <!-- ปุ่ม Check-In -->
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                          data-bs-target="#checkinModal_<%= booking.booking_id %>">
+                          <ion-icon name="checkmark-sharp"></ion-icon> Check-In
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="checkinModal_<%= booking.booking_id %>" tabindex="-1"
+                          aria-labelledby="checkinModalLabel_<%= booking.booking_id %>" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="checkinModalLabel_<%= booking.booking_id %>">ยืนยัน Check-In
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body text-start">
+                                ชื่อผู้จอง: <strong>
+                                  <%= booking.user_name %>
+                                </strong><br>
+                                ทัวร์: <strong>
+                                  <%= booking.tour_name %>
+                                </strong><br>
+                                รอบการเดินทาง: <strong>
+                                  <%= new Date(booking.start_date).toLocaleDateString('th-TH') %> - <%= new
+                                      Date(booking.end_date).toLocaleDateString('th-TH') %>
+                                </strong><br>
+                                จำนวน: <strong>
+                                  <%= booking.total_people %>
+                                </strong> คน
+
+                              </div>
+                              <div class="modal-footer">
+                                <form action="/admin/checkIn/confirm/<%= booking.booking_id %>" method="POST">
+                                  <button type="submit" class="btn btn-success">ยืนยัน Check-In</button>
+                                </form>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <% } %>
+                  </td>
+
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+  </body>
+  <%- include('../partials/allScript') %>
+
+</html>

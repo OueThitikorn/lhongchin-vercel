@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/baseHead', { customTitle: 'Edit Tour' }) %>
+
+    <body>
+        <%- include('../partials/navAdmin') %>
+            <div class="container-lg">
+                <div class="mx-auto">
+                    <div class="card p-4 m-4">
+                        <h1 class="text-center mb-3">แก้ไขโปรแกรมทัวร์</h1>
+                        <form action="/admin/manageTour/edit/<%= tour.tour_id %>" method="POST"
+                            enctype="multipart/form-data">
+                            <label for="image" class="form-label"><span
+                                    style="color: red; margin-right: 6px;">*</span>รูปภาพ</label>
+                            <div style="border: rgb(215, 215, 215) 1px solid; background-color: rgba(255, 255, 255, 0.126); border-radius: 10px;"
+                                class="p-4">
+
+                                <div style="display: flex; justify-content: center;">
+                                    <img src="/uploads/<%= tour.image %>" height="500" />
+                                </div>
+                                <div class="">
+                                    <% if (tour.image) { %>
+                                        <div>
+                                            <input type="hidden" name="oldImage" class="form-control"
+                                                value="<%= tour.image %>">
+                                            <% } %><br>
+                                                <input type="file" class="form-control" name="image">
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="my-3">
+                                <label for="tour_name" class="form-label"><span
+                                        style="color: red; margin-right: 6px;">*</span>ชื่อ</label>
+                                <input type="text" name="tour_name" class="form-control" value="<%= tour.tour_name %>"
+                                    required placeholder="ใส่ชื่อโปรแกรมทัวร์...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label"><span
+                                        style="color: red; margin-right: 6px;">*</span>ราคา</label>
+                                <input type="number" name="price" class="form-control" value="<%= tour.price %>"
+                                    required placeholder="ใส่ราคา...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label"><span
+                                        style="color: red; margin-right: 6px;">*</span>รายละเอียด</label>
+                                <textarea name="description" required class="form-control"
+                                    placeholder="ใส่รายละเอียด..."
+                                    style="height: 100px"><%= tour.description %></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="country" class="form-label"><span
+                                        style="color: red; margin-right: 6px;">*</span>ประเทศ</label>
+                                <input type="text" name="country" class="form-control" value="<%= tour.country %>"
+                                    required placeholder="ใส่ชื่อประเทศ...">
+                            </div>
+
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="start_date" class="form-label"><span
+                                            style="color: red; margin-right: 6px;">*</span>วันที่</label>
+                                    <input type="date" name="start_date" class="form-control"
+                                        value="<%= tour.start_date.toISOString().split('T')[0] %>" required>
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="end_date" class="form-label"><span
+                                            style="color: red; margin-right: 6px;">*</span>ถึง</label>
+                                    <input type="date" name="end_date" class="form-control"
+                                        value="<%= tour.end_date.toISOString().split('T')[0] %>" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="seat" class="form-label"><span
+                                        style="color: red; margin-right: 6px;">*</span>จำนวนที่นั่ง</label>
+                                <input type="number" name="seat" class="form-control" value="<%= tour.seat %>" required
+                                    placeholder="ใส่จำนวนที่นั่ง...">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="guide" class="form-label"><span style="color: red;">*</span>ชื่อไกด์</label>
+                                <select name="guide" class="form-control" required>
+                                    <% guides.forEach(guide=> { %>
+                                        <option value="<%= guide.guide_id %>">
+                                            <%= guide.first_name %>
+                                                <%= guide.last_name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-success">อัพเดท</button>
+                            <a type="button" class="btn btn-secondary" href="/admin/manageTour">ย้อนกลับ</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+    </body>
+    <%- include('../partials/allScript') %>
+
+</html>

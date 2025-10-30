@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/baseHead', { customTitle: 'Create New Tour' }) %>
+
+    <body>
+        <div style="background-color: #a9141b;">
+            <div class="container">
+
+                <nav class="navbar navbar-dark">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <a class="navbar-brand mx-auto d-flex align-items-center" href="/"
+                            style="font-weight: bold; font-size: 30px;">
+                            <img src="/images/logo.png" alt="Logo" width="70" height="70"
+                                class="d-inline-block me-2 align-text-top">
+                            LhongChin
+                        </a>
+                    </div>
+                </nav>
+
+                <nav class="nav-con navbar navbar-expand-lg navbar-dark"
+                    style="position: sticky; top: 0; z-index: 999;">
+                    <div class="container-fluid">
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <div class="d-flex justify-content-between w-100 align-items-center">
+
+                                <div class="navbar-nav">
+                                </div>
+                                <div class="d-none d-lg-flex gap-2">
+                                    <% if (!isLoggedIn) { %>
+                                        <a class="button-login" href="/auth/login">เข้าสู่ระบบ</a>
+                                        <a class="button-login" href="/auth/register">สมัครสมาชิก</a>
+                                        <% } else { %>
+                                            <p style="color: #ffffffc9;" class="my-auto">
+                                                <%= role %> : <%= name %>
+                                            </p>
+                                            <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="container py-5">
+            <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
+                <div class="card shadow-lg border-0 rounded-4 p-4">
+                    <% if (user.role==='สมาชิก' ) { %>
+                        <h1 class="text-center fw-bold mb-4">จองทัวร์</h1>
+                        <% } else if (user.role==='พนักงาน' || user.role==='ผู้ดูแลระบบ' ) { %>
+                            <h1 class="text-center fw-bold mb-4">จองทัวร์ให้ลูกค้า</h1>
+                            <% } %>
+
+                                <form action="/tourprogram/bookTour/<%= tour.tour_id %>" method="POST">
+
+                                    <!-- hidden fields -->
+                                    <input type="hidden" name="tour_id" value="<%= tour.tour_id %>">
+                                    <input type="hidden" name="user_id" value="<%= user.user_id %>">
+
+                                    <!-- tour info -->
+                                    <div class="bg-light rounded-3 p-3 mb-4">
+                                        <h2 class="mb-0">
+                                            <%= tour.tour_name %>
+                                        </h2>
+                                        <p class="mb-0 fs-5">ราคา : <span class="fw-bold"
+                                                style="color: #a9141b; font-size: 32px;">
+                                                <%= tour.price.toLocaleString() %>
+                                            </span> บาท/คน
+                                        </p>
+                                    </div>
+
+                                    <!-- user info -->
+                                    <% if (user.role==='สมาชิก' ) { %>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label"><span class="text-danger">*</span>
+                                                    ชื่อผู้จอง</label>
+                                                <input type="text" class="form-control" name="user_name"
+                                                    placeholder="ใส่ชื่อ-นามสกุลผู้จอง..."
+                                                    value="<%= user.first_name %> <%= user.last_name %>" readonly>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label"><span class="text-danger">*</span>
+                                                    เบอร์โทรศัพท์</label>
+                                                <input type="text" class="form-control" name="user_phone"
+                                                    placeholder="0987654321" value="<%= user.phone %>" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label"><span class="text-danger">*</span> อีเมล</label>
+                                            <input type="email" class="form-control" name="user_email"
+                                                placeholder="example@gmail.com" value="<%= user.email %>" readonly>
+                                        </div>
+                                        <% } else if (user.role==='พนักงาน' || user.role==='ผู้ดูแลระบบ' ) { %>
+                                            <div class="row g-3 mb-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label"><span class="text-danger">*</span>
+                                                        ชื่อ (ลูกค้า)</label>
+                                                    <input type="text" class="form-control" name="user_name"
+                                                        placeholder="ใส่ชื่อ-นามสกุลลูกค้า...">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label"><span class="text-danger">*</span>
+                                                        เบอร์โทรศัพท์ (ลูกค้า)</label>
+                                                    <input type="text" class="form-control" name="user_phone"
+                                                        placeholder="0987654321">
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label"><span class="text-danger">*</span>
+                                                    อีเมล (ลูกค้า)</label>
+                                                <input type="email" class="form-control" name="user_email"
+                                                    placeholder="example@gmail.com">
+                                            </div>
+                                            <% } %>
+                                                <!-- travel count -->
+                                                <div class="mb-4">
+                                                    <label class="form-label"><span class="text-danger">*</span>
+                                                        จำนวนผู้เดินทาง</label>
+                                                    <select name="seats_booked" id="seats_booked" class="form-select"
+                                                        required>
+                                                        <option value="" disabled selected>เลือกจำนวนผู้เดินทาง</option>
+                                                        <% for (let i=1; i <=( tour.seat - tour.seats_booked ); i++) {
+                                                            %>
+                                                            <option value="<%= i %>">
+                                                                <%= i %> ที่นั่ง
+                                                            </option>
+                                                            <% } %>
+                                                    </select>
+                                                </div>
+
+                                                <!-- buttons -->
+                                                <div class="text-center">
+                                                    <button type="submit"
+                                                        class="btn btn-success px-4 py-2 rounded-pill shadow-sm">
+                                                        <i class="bi bi-check-circle"></i> ยืนยันการจอง
+                                                    </button>
+                                                    <a href="/tourprogram"
+                                                        class="btn btn-outline-secondary px-4 py-2 rounded-pill ms-2">
+                                                        <i class="bi bi-arrow-left-circle"></i> ย้อนกลับ
+                                                    </a>
+                                                </div>
+
+                                </form>
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+    <%- include('partials/allScript') %>
+
+</html>
