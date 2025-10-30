@@ -27,8 +27,34 @@ const upload = multer({ storage });
 
 
 router.get('/', async (req, res) => {
-  
-  res.send('Hello from Vercel! 👋');
+  try {
+    const [tours] = await db.query(`
+            SELECT 
+                t.tour_id,
+                t.image, 
+                t.tour_name,
+                t.price,
+                t.description,
+                t.country,
+                t.start_date,
+                t.end_date,
+                t.seats_booked,
+                t.seat, 
+                CONCAT(g.first_name, ' ', g.last_name) AS guide_name,
+                DATEDIFF(t.end_date, t.start_date) + 1 AS duration
+            FROM tours t
+            LEFT JOIN guides g ON t.guide_id = g.guide_id
+        `);
+
+    res.render('index', {
+      tours: tours,
+      isLoggedIn: req.session?.isLoggedIn || false
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('เกิดข้อผิดพลาด');
+  }
 });
 
 // ------------------------------------------------------------------------------------------------
