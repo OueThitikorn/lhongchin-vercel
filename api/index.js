@@ -4,9 +4,7 @@ const app = express();
 
 // ตัวอย่าง route
 app.get('/', (req, res) => {
-    res.render('index', {
-        isLoggedIn: req.session?.isLoggedIn || false
-    });
+    res.render('index');
 });
 
 app.get('/test', (req, res) => {
