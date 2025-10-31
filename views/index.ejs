@@ -213,34 +213,7 @@
       </section>
 
       <!-- Tour Section -->
-      <section class="tour-section container" id="tours">
-        <h2>โปรแกรมทัวร์แนะนำ</h2>
-        <div class="row g-4">
-          <% tours.forEach(tour=> { %>
-            <div class="col-md-4">
-              <div class="card card-tour h-100 d-flex flex-column">
-                <% if (tour.image) { %>
-                  <img src="/uploads/<%= tour.image %>" class="img-fluid rounded-start" />
-                  <% } else { %>
-                    <p>No image</p>
-                    <% } %>
-
-                      <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">ทัวร์ <%= tour.tour_name %>
-                        </h5>
-                        <p class="card-text text-muted flex-grow-1">
-                          <%= tour.description %>
-                        </p>
-                        <a href="/tourprogram" class="btn btn-tour mt-auto">ดูรายละเอียด</a>
-                      </div>
-              </div>
-
-            </div>
-            <% }) %>
-
-
-        </div>
-      </section>
+      
 
       <!-- Contact / CTA -->
       <section class="contact">

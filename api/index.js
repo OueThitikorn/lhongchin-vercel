@@ -4,11 +4,13 @@ const app = express();
 
 // ตัวอย่าง route
 app.get('/', (req, res) => {
-    res.send('✅ Hello from Vercel!');
+    res.render('index', {
+        isLoggedIn: req.session?.isLoggedIn || false
+    });
 });
 
 app.get('/test', (req, res) => {
-    res.json({ message: "It works!" });
+    res.send('✅ Hello from test!');
 });
 
 // ส่งออก app ให้ Vercel ใช้งาน
