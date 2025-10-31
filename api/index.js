@@ -1,15 +1,15 @@
-// api/index.js
 const express = require('express');
 const app = express();
+const path = require('path');
 
-// ตัวอย่าง route
+// ตั้งค่า view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); // โฟลเดอร์ views ต้องมีไฟล์ index.ejs
+
 app.get('/', (req, res) => {
-    res.send('✅ Hello from Vercel!');
+    res.render('index'); // จะหาไฟล์ views/index.ejs
 });
 
 app.get('/test', (req, res) => {
-    res.json({ message: "It works!" });
+    res.send('✅ Hello from test!');
 });
-
-// ส่งออก app ให้ Vercel ใช้งาน
-module.exports = app;
