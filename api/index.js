@@ -10,4 +10,3 @@ app.get('/', (req, res) => {
     res.render('index'); // จะหาไฟล์ views/index.ejs
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
