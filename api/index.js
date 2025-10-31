@@ -1,13 +1,13 @@
 // api/index.js
 const express = require('express');
-const router = express.Router();
+const app = express();
 
 // ตัวอย่าง route
-router.get('/', (req, res) => {
+app.get('/', (req, res) => {
     res.render('index');
 });
 
-router.get('/test', (req, res) => {
+app.get('/test', (req, res) => {
     res.send('✅ Hello from test!');
 });
 
