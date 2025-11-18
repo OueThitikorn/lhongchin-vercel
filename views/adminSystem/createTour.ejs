@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/baseHead', { customTitle: 'Create New Tour' }) %>
+
+    <body>
+        <%- include('../partials/navAdmin') %>
+            <div class="container-lg">
+                <div class="mx-auto">
+                    <div class="card p-4 m-4">
+                        <h1 class="text-center mb-3">สร้างโปรแกรมทัวร์</h1>
+                        <form action="/admin/manageTour/create" method="POST" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="tour_name" class="form-label"><span style="color: red;">* </span>ชื่อ</label>
+                                <input type="text" name="tour_name" class="form-control" required
+                                    placeholder="ใส่ชื่อโปรแกรมทัวร์...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label"><span style="color: red;">*
+                                    </span>ราคา</label>
+                                <input type="number" name="price" class="form-control" required
+                                    placeholder="ใส่ราคา...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label"><span style="color: red;">*
+                                    </span>รายละเอียด</label>
+                                <textarea name="description" class="form-control" required
+                                    placeholder="ใส่รายละเอียด..." style="height: 100px"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="country" class="form-label"><span style="color: red;">*
+                                    </span>ประเทศ</label>
+                                <input type="text" name="country" class="form-control" required
+                                    placeholder="ใส่ชื่อประเทศ...">
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="start_date" class="form-label"><span style="color: red;">*
+                                        </span>วันที่</label>
+                                    <input type="date" name="start_date" class="form-control" required>
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="end_date" class="form-label"><span style="color: red;">*
+                                        </span>ถึง</label>
+                                    <input type="date" name="end_date" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="seat" class="form-label"><span style="color: red;">*
+                                    </span>จำนวนที่นั่ง</label>
+                                <input type="number" name="seat" class="form-control" required
+                                    placeholder="ใส่จำนวนที่นั่ง...">
+                            </div>
+                            <div class="mb-4">
+                                <label for="guide" class="form-label"><span style="color: red;">*</span>ชื่อไกด์</label>
+                                <select name="guide" class="form-control" required>
+                                    <% guides.forEach(guide=> { %>
+                                        <option value="<%= guide.guide_id %>">
+                                            <%= guide.first_name %>
+                                                <%= guide.last_name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="image" class="form-label"><span style="color: red;">*
+                                    </span>รูปภาพ</label>
+                                <input class="form-control" type="file" name="image">
+                            </div>
+                            <button type="submit" class="btn btn-success">ยืนยัน</button>
+                            <a type="button" class="btn btn-secondary" href="/admin/manageTour">ย้อนกลับ</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </body>
+    <%- include('../partials/allScript') %>
+
+</html>

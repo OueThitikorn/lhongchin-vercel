@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<%- include('./partials/baseHead', { customTitle: 'Home' }) %>
+
+  <head>
+    <style>
+      body {
+        font-family: 'Prompt', sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+      }
+
+      /* Hero Section */
+      .hero {
+        position: relative;
+        height: 840px;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        text-align: center;
+        transition: background-image 1s ease-in-out;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.45);
+      }
+
+      .hero-text {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-text h1 {
+        font-size: 4rem;
+        font-weight: 600;
+        color: white;
+      }
+
+      .hero-text p {
+        font-size: 1.5rem;
+        margin-top: 20px;
+        color: white;
+      }
+
+      .btn-hero {
+        background-color: #a9141b;
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-size: 18px;
+        margin-top: 30px;
+        transition: 0.3s ease;
+      }
+
+      .btn-hero:hover {
+        background-color: #bc010a;
+        transform: scale(1.06);
+        color: white;
+      }
+
+      /* About Section */
+      .about {
+        padding: 80px 20px;
+        background-color: #fff;
+        text-align: center;
+      }
+
+      .about h2 {
+        font-size: 2.5rem;
+        color: #a9141b;
+        margin-bottom: 20px;
+      }
+
+      .about p {
+        color: #555;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      /* Tour Section */
+      .tour-section {
+        padding: 80px 20px;
+      }
+
+      .tour-section h2 {
+        color: #a9141b;
+        font-weight: 700;
+        margin-bottom: 40px;
+        text-align: center;
+      }
+
+      .card-tour {
+        border-radius: 20px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card-tour:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .card-tour img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .card-tour img:hover {
+        transform: scale(1.05);
+      }
+
+      .btn-tour {
+        background-color: #a9141b;
+        border: none;
+        color: #fff;
+        padding: 10px 0;
+        border-radius: 15px;
+        width: 100%;
+        transition: 0.3s ease;
+      }
+
+      .btn-tour:hover {
+        background-color: #bc010a;
+        transform: scale(1.02);
+      }
+
+      /* Contact Section */
+      .contact {
+        background-color: #f5f5f5;
+        padding: 60px 20px;
+        text-align: center;
+      }
+
+      .contact h3 {
+        color: #a9141b;
+        margin-bottom: 20px;
+      }
+
+      .contact p {
+        color: #555;
+      }
+
+      .contact a {
+        color: #a9141b;
+        text-decoration: none;
+      }
+
+      /* Footer */
+      footer {
+        background-color: #a9141b;
+        color: #fff;
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      footer a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero-text h1 {
+          font-size: 2.5rem;
+        }
+
+        .hero-text p {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <%- include('./partials/nav') %>
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-text">
+          <h1>LhongChin Travel</h1>
+          <p>เที่ยวสนุก ปลอดภัย กับทัวร์คุณภาพทุกเส้นทาง</p>
+          <a href="#tours" class="btn btn-hero">ดูโปรแกรมทัวร์</a>
+        </div>
+      </section>
+
+
+      <!-- About Section -->
+      <section class="about">
+        <h2>เกี่ยวกับ LhongChin</h2>
+        <p>
+          เราให้บริการทัวร์ครบวงจร ด้วยทีมงานมืออาชีพ โปรแกรมทัวร์หลากหลาย
+          และประสบการณ์ตรงจากผู้เชี่ยวชาญด้านการเดินทาง
+        </p>
+      </section>
+
+      <!-- Tour Section -->
+      <section class="tour-section container" id="tours">
+        <h2>โปรแกรมทัวร์แนะนำ</h2>
+        <div class="row g-4">
+          <% tours.forEach(tour=> { %>
+            <div class="col-md-4">
+              <div class="card card-tour h-100 d-flex flex-column">
+                <% if (tour.image) { %>
+                  <img src="/uploads/<%= tour.image %>" class="img-fluid rounded-start" />
+                  <% } else { %>
+                    <p>No image</p>
+                    <% } %>
+
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">ทัวร์ <%= tour.tour_name %>
+                        </h5>
+                        <p class="card-text text-muted flex-grow-1">
+                          <%= tour.description %>
+                        </p>
+                        <a href="/tourprogram" class="btn btn-tour mt-auto">ดูรายละเอียด</a>
+                      </div>
+              </div>
+
+            </div>
+            <% }) %>
+
+
+        </div>
+      </section>
+
+      <!-- Contact / CTA -->
+      <section class="contact">
+        <h3>ติดต่อเรา</h3>
+        <p>สอบถามข้อมูลเพิ่มเติม โทร <a href="tel:+66987412365">098-741-2365</a> หรืออีเมล <a
+            href="mailto:LhongChin_Travel@gmail.com">LhongChin_Travel@gmail.com</a></p>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        &copy; 2025 LhongChin Travel. ทุกสิทธิ์สงวน.
+      </footer>
+
+      <%- include('./partials/allScript') %>
+
+  </body>
+
+</html>

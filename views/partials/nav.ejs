@@ -1,0 +1,59 @@
+<div style="background-color: #a9141b;">
+    <div class="container">
+
+        <nav class="navbar navbar-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <a class="navbar-brand mx-auto d-flex align-items-center" href="/"
+                    style="font-weight: bold; font-size: 30px;">
+                    <img src="/images/logo.png" alt="Logo" width="70" height="70"
+                        class="d-inline-block me-2 align-text-top">
+                    LhongChin
+                </a>
+            </div>
+        </nav>
+
+        <nav class="nav-con navbar navbar-expand-lg navbar-dark" style="position: sticky; top: 0; z-index: 999;">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="d-flex justify-content-between w-100 align-items-center">
+
+                        <div class="navbar-nav gap-3">
+
+                            <% if (!isLoggedIn) { %>
+                                <a class="nav-link" href="/">หน้าแรก</a>
+                                <a class="nav-link" href="/contact">ติดต่อเรา</a>
+                                <a class="nav-link d-lg-none" href="/auth/login">เข้าสู่ระบบ</a>
+                                <a class="nav-link d-lg-none" href="/auth/register">สมัครสมาชิก</a>
+                                <% } else { %>
+                                    <a class="nav-link" href="/">หน้าแรก</a>
+                                    <a class="nav-link" href="/tourprogram">โปรแกรมทัวร์</a>
+                                    <a class="nav-link" href="/reserve">สถานะการจอง</a>
+                                    <a class="nav-link" href="/contact">ติดต่อเรา</a>
+                                    <a class="nav-link d-lg-none" href="/auth/logout">ออกจากระบบ</a>
+                                    <% } %>
+                        </div>
+
+                        <div class="d-none d-lg-flex gap-2">
+                            <% if (!isLoggedIn) { %>
+                                <a class="button-login" href="/auth/login">เข้าสู่ระบบ</a>
+                                <a class="button-login" href="/auth/register">สมัครสมาชิก</a>
+                                <% } else { %>
+                                    <p style="color: #ffffffc9;" class="my-auto">
+                                        <%= role %> : <%= name %>
+                                    </p>
+                                    <a class="button-login" href="/auth/logout">ออกจากระบบ</a>
+                                    <% } %>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>

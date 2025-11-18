@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/baseHead', { customTitle: 'การจัดการข้อมูลการจอง' }) %>
+
+  <body>
+    <%- include('../partials/navAdmin') %>
+
+      <div class="mx-5">
+        <h1 class="mb-5">การจัดการการจอง</h1>
+
+        <div class="table-responsive d-flex justify-content-center">
+          <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-light">
+              <tr>
+                <th>#ID</th>
+                <th>ชื่อผู้จอง</th>
+                <th>เบอร์โทรศัพท์</th>
+                <th>อีเมล</th>
+                <th>ชื่อโปรแกรมทัวร์</th>
+                <th>รอบการเดินทาง</th>
+                <th>จำนวน (คน)</th>
+                <th>ราคา (บาท)</th>
+                <th>วันที่จอง</th>
+                <th>สถานะ</th>
+                <th>เช็คอิน</th>
+                <th>จัดการ</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% bookings.forEach(booking=> { %>
+                <tr class="text-center">
+                  <td>
+                    <%= booking.booking_id %>
+                  </td>
+                  <td>
+                    <%= booking.user_name %>
+                  </td>
+                  <td>
+                    <%= booking.phone %>
+                  </td>
+                  <td>
+                    <%= booking.email %>
+                  </td>
+                  <td>
+                    <%= booking.tour_name %>
+                  </td>
+                  <td>
+                    <% if (booking.start_date && booking.end_date) { %>
+                      <%= new Date(booking.start_date).toLocaleDateString('th-TH') %>
+                        -
+                        <%= new Date(booking.end_date).toLocaleDateString('th-TH') %>
+                          <% } else { %>
+                            -
+                            <% } %>
+                  </td>
+                  <td>
+                    <%= booking.total_people %> คน
+                  </td>
+                  <td>
+                    <%= booking.total_price.toLocaleString() %>
+                  </td>
+                  <td>
+                    <%= new Date(booking.booking_date).toLocaleDateString('th-TH') %>
+                  </td>
+                  <td>
+                    <% if (booking.booking_status==='ชำระเงินแล้ว' ) { %>
+                      <div style="color: green;">ชำระเงินแล้ว</div>
+                      <div>
+                        <%= new Date(booking.payment_date).toLocaleDateString('th-TH') %>
+                          <%= booking.payment_time %> น.
+                      </div>
+                      <% } else if (booking.booking_status==='รอยืนยันการชำระเงิน' ) { %>
+                        <div style="color: orange;">รอยืนยันการชำระเงิน</div>
+                        <% } else if (booking.booking_status==='ชำระเงินไม่สำเร็จ' ) { %>
+                          <div style="color: red;">ชำระเงินไม่สำเร็จ</div>
+                          <% } else { %>
+                            <div>ยังไม่ชำระเงิน</div>
+                            <% } %>
+                  </td>
+                  <td>
+                    <% if (booking.checkin_status==='เช็คอินแล้ว' ) { %>
+                      <div style="color: green;">เช็คอินแล้ว</div>
+                      <div>
+                        <%= new Date(booking.checkin_date).toLocaleDateString('th-TH') %>
+                      </div>
+                      <% } else if (booking.checkin_status==='รอเช็คอิน' ) { %>
+                        <div style="color: orange;">รอเช็คอิน</div>
+                        <% } else { %>
+                          <div>-</div>
+                          <% } %>
+                  </td>
+
+                  <td>
+                    <!-- ปุ่มลบ -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                      data-bs-target="#deleteUserModal_<%= booking.booking_id %>">
+                      <ion-icon name="trash"></ion-icon>
+                    </button>
+
+                    <!-- Modal ลบ -->
+                    <div class="modal fade" id="deleteUserModal_<%= booking.booking_id %>" tabindex="-1"
+                      aria-labelledby="deleteUserModalLabel_<%= booking.booking_id %>" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="deleteUserModalLabel_<%= booking.booking_id %>">ยืนยันการลบ</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button>
+                          </div>
+                          <div class="modal-body">
+                            คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลการจอง:
+                            <div style="color: brown; font-size: 18px;">
+                              "#ID<%= booking.booking_id %>"
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                            <a href="/admin/manageReserve/delete/<%= booking.booking_id %>"
+                              class="btn btn-danger">ลบ</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+  </body>
+  <%- include('../partials/allScript') %>
+
+</html>

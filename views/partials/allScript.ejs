@@ -1,0 +1,28 @@
+<script src="/javascripts/script.js"></script>
+<script src="/javascripts/navAdmin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+<script>
+    const images = [
+        "/images/view1.png",
+        "/images/view2.png",
+        "/images/view3.png"
+    ];
+
+    let currentIndex = 0;
+    const heroSection = document.querySelector(".hero");
+
+    function changeBackground() {
+        heroSection.style.backgroundImage = `url('${images[currentIndex]}')`;
+        currentIndex = (currentIndex + 1) % images.length;
+    }
+
+    changeBackground(); // แสดงรูปแรกทันที
+    setInterval(changeBackground, 5000); // เปลี่ยนทุก 5 วินาที
+
+</script>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/baseHead', { customTitle: 'Manage Guide' }) %>
+
+  <body>
+    <%- include('../partials/navAdmin') %>
+
+      <div class="mx-5">
+        <h1>การจัดการข้อมูลไกด์</h1>
+        <div class="d-flex justify-content-end mb-3">
+          <!-- ปุ่มเปิด Modal สร้าง -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGuideModal">
+            <ion-icon name="add" style="font-size: 1.2rem; vertical-align: middle; margin-right: 3px;"></ion-icon>
+            สร้าง
+          </button>
+
+          <!-- Modal สร้างไกด์ -->
+          <div class="modal fade" id="createGuideModal" tabindex="-1" aria-labelledby="createGuideModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+
+                <!-- ส่วนหัว -->
+                <div class="modal-header">
+                  <h5 class="modal-title text-dark" id="createGuideModalLabel">เพิ่มข้อมูลไกด์ใหม่</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button>
+                </div>
+
+                <!-- เนื้อหา -->
+                <div class="modal-body">
+                  <form id="createGuideForm" action="/admin/manageGuide/create" method="POST"
+                    enctype="multipart/form-data">
+
+                    <div class="mb-3 text-start">
+                      <label for="firstname_create" class="form-label">ชื่อ :</label>
+                      <input type="text" class="form-control" id="firstname_create" name="firstname" required>
+                    </div>
+
+                    <div class="mb-3 text-start">
+                      <label for="lastname_create" class="form-label">นามสกุล :</label>
+                      <input type="text" class="form-control" id="lastname_create" name="lastname" required>
+                    </div>
+
+                    <div class="mb-3 text-start">
+                      <label for="email_create" class="form-label">อีเมล :</label>
+                      <input type="email" class="form-control" id="email_create" name="email" required>
+                    </div>
+
+                    <div class="mb-3 text-start">
+                      <label for="gender_create" class="form-label">เพศ :</label>
+                      <select class="form-select shadow-sm" id="gender_create" name="gender" required>
+                        <option value="" disabled selected hidden>-- กรุณาเลือกเพศ --</option>
+                        <option value="ชาย">ชาย</option>
+                        <option value="หญิง">หญิง</option>
+                        <option value="อื่นๆ">อื่นๆ</option>
+                      </select>
+                    </div>
+
+                    <div class="mb-3 text-start">
+                      <label for="phone_create" class="form-label">เบอร์โทรศัพท์ :</label>
+                      <input type="tel" class="form-control" id="phone_create" name="phone" pattern="[0-9]{9,10}"
+                        required>
+                      <small class="text-muted">กรอกเฉพาะตัวเลข 9–10 หลัก</small>
+                    </div>
+
+                  </form>
+                </div>
+
+                <!-- ส่วนท้าย -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                  <button type="submit" form="createGuideForm" class="btn btn-success">บันทึก</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="table-responsive d-flex justify-content-center">
+          <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 50px;">#ID</th>
+                <th style="width: 250px;">ชื่อ - นามสกุล</th>
+                <th style="width: 150px;">เบอร์โทรศัพท์</th>
+                <th style="width: 200px;">อีเมล</th>
+                <th style="width: 160px;">เพศ</th>
+                <th style="width: 100px;">จัดการ</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% guide.forEach(guide=> { %>
+                <tr class="text-center">
+                  <td>
+                    <%= guide.guide_id %>
+                  </td>
+                  <td>
+                    <%= guide.first_name %>
+                      <%= guide.last_name %>
+                  </td>
+                  <td>
+                    <%= guide.phone %>
+                  </td>
+                  <td>
+                    <%= guide.email %>
+                  </td>
+                  <td>
+                    <%= guide.gender %>
+                  </td>
+
+                  <!-- ปุ่มแก้ไขข้อมูลผู้ใช้ -->
+                  <td><!-- ปุ่มเปิด Modal -->
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                      data-bs-target="#editGuideModal_<%= guide.guide_id %>">
+                      <ion-icon name="pencil-sharp"></ion-icon>
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="editGuideModal_<%= guide.guide_id %>" tabindex="-1"
+                      aria-labelledby="editGuideLabel_<%= guide.guide_id %>" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+
+                          <!-- ส่วนหัว -->
+                          <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="editGuideLabel_<%= guide.guide_id %>">
+                              แก้ไขข้อมูลไกด์
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+
+                          <!-- เนื้อหา -->
+                          <div class="modal-body">
+                            <form id="editGuideForm_<%= guide.guide_id %>"
+                              action="/admin/manageGuide/edit/<%= guide.guide_id %>" method="POST"
+                              enctype="multipart/form-data">
+
+                              <div class="mb-3 text-start">
+                                <label for="firstname_<%= guide.guide_id %>" class="form-label">ชื่อ :</label>
+                                <input type="text" class="form-control" id="firstname_<%= guide.guide_id %>"
+                                  name="firstname" value="<%= guide.first_name %>" required>
+                              </div>
+
+                              <div class="mb-3 text-start">
+                                <label for="lastname_<%= guide.guide_id %>" class="form-label">นามสกุล :</label>
+                                <input type="text" class="form-control" id="lastname_<%= guide.guide_id %>"
+                                  name="lastname" value="<%= guide.last_name %>" required>
+                              </div>
+
+                              <div class="mb-3 text-start">
+                                <label for="email_<%= guide.guide_id %>" class="form-label">อีเมล :</label>
+                                <input type="email" class="form-control" id="email_<%= guide.guide_id %>" name="email"
+                                  value="<%= guide.email %>" required>
+                              </div>
+
+                              <div class="mb-3 text-start">
+                                <label for="gender<%= guide.gender %>" class="form-label">เพศ :</label>
+                                <select class="form-select shadow-sm" id="gender<%= guide.gender %>" name="gender"
+                                  required>
+                                  <option value="ชาย" <%=guide.gender==='ชาย' ? 'selected' : '' %>>ชาย</option>
+                                  <option value="หญิง" <%=guide.gender==='หญิง' ? 'selected' : '' %>>หญิง</option>
+                                  <option value="อื่นๆ" <%=guide.gender==='อื่นๆ' ? 'selected' : '' %>>อื่นๆ</option>
+                                </select>
+                              </div>
+
+                              <div class="mb-3 text-start">
+                                <label for="phone_<%= guide.guide_id %>" class="form-label">เบอร์โทรศัพท์ :</label>
+                                <input type="tel" class="form-control" id="phone_<%= guide.guide_id %>" name="phone"
+                                  value="<%= guide.phone %>" pattern="[0-9]{9,10}" required>
+                                <small class="text-muted">กรอกเฉพาะตัวเลข 9–10 หลัก</small>
+                              </div>
+
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                            <button type="submit" form="editGuideForm_<%= guide.guide_id %>"
+                              class="btn btn-success">บันทึก</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <!-- ปุ่มลบ -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                      data-bs-target="#deleteGuideModal_<%= guide.guide_id %>">
+                      <ion-icon name="trash"></ion-icon>
+                    </button>
+
+                    <!-- Modal ลบ -->
+                    <div class="modal fade" id="deleteGuideModal_<%= guide.guide_id %>" tabindex="-1"
+                      aria-labelledby="deleteGuideModalLabel_<%= guide.guide_id %>" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="deleteGuideModalLabel_<%= guide.guide_id %>">ยืนยันการลบ</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button>
+                          </div>
+                          <div class="modal-body">
+                            คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลไกด์:
+                            <div style="color: brown; font-size: 18px;">
+                              "<%= guide.email %>"
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <a href="/admin/manageGuide/delete/<%= guide.guide_id %>" class="btn btn-danger">ลบ</a>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+  </body>
+  <%- include('../partials/allScript') %>
+
+</html>
