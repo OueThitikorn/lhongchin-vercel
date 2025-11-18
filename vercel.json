@@ -1,15 +1,19 @@
 {
     "version": 2,
-    "builds": [
-        {
-            "src": "index.js",
-            "use": "@now/node"
+    "functions": {
+        "app.js": {
+            "includeFiles": [
+                "views/**",
+                "routes/**",
+                "public/**",
+                "db.js"
+            ]
         }
-    ],
+    },
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "index.js"
+            "dest": "app.js"
         }
     ]
 }
